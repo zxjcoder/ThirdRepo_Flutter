@@ -25,27 +25,28 @@ class QrImageView extends StatefulWidget {
     this.size,
     this.padding = const EdgeInsets.all(10.0),
     this.backgroundColor = Colors.transparent,
-    @Deprecated('use colors in eyeStyle and dataModuleStyle instead')
-    this.foregroundColor = Colors.black,
     this.version = QrVersions.auto,
     this.errorCorrectionLevel = QrErrorCorrectLevel.L,
     this.errorStateBuilder,
     this.constrainErrorBounds = true,
     this.gapless = true,
     this.embeddedImage,
-    this.embeddedImageStyle = const QrEmbeddedImageStyle(),
+    this.embeddedImageStyle,
     this.semanticsLabel = 'qr code',
     this.eyeStyle = const QrEyeStyle(
       eyeShape: QrEyeShape.square,
+      color: Colors.black,
     ),
     this.dataModuleStyle = const QrDataModuleStyle(
       dataModuleShape: QrDataModuleShape.square,
+      color: Colors.black,
     ),
     this.embeddedImageEmitsError = false,
-    this.gradient,
-  }) : assert(
-        QrVersions.isSupportedVersion(version),
-        'QR code version $version is not supported',
+    @Deprecated('use colors in eyeStyle and dataModuleStyle instead')
+        this.foregroundColor,
+  })  : assert(
+          QrVersions.isSupportedVersion(version),
+          'QR code version $version is not supported',
         ),
         _data = data,
         _qrCode = null;
@@ -58,15 +59,13 @@ class QrImageView extends StatefulWidget {
     this.size,
     this.padding = const EdgeInsets.all(10.0),
     this.backgroundColor = Colors.transparent,
-    @Deprecated('use colors in eyeStyle and dataModuleStyle instead')
-    this.foregroundColor = Colors.black,
     this.version = QrVersions.auto,
     this.errorCorrectionLevel = QrErrorCorrectLevel.L,
     this.errorStateBuilder,
     this.constrainErrorBounds = true,
     this.gapless = true,
     this.embeddedImage,
-    this.embeddedImageStyle = const QrEmbeddedImageStyle(),
+    this.embeddedImageStyle,
     this.semanticsLabel = 'qr code',
     this.eyeStyle = const QrEyeStyle(
       eyeShape: QrEyeShape.square,
@@ -77,10 +76,11 @@ class QrImageView extends StatefulWidget {
       color: Colors.black,
     ),
     this.embeddedImageEmitsError = false,
-    this.gradient,
-  }) : assert(
-        QrVersions.isSupportedVersion(version),
-        'QR code version $version is not supported',
+    @Deprecated('use colors in eyeStyle and dataModuleStyle instead')
+        this.foregroundColor,
+  })  : assert(
+          QrVersions.isSupportedVersion(version),
+          'QR code version $version is not supported',
         ),
         _data = null,
         _qrCode = qr;
@@ -93,13 +93,6 @@ class QrImageView extends StatefulWidget {
 
   /// The background color of the final QR code widget.
   final Color backgroundColor;
-
-  /// The foreground color of the final QR code widget.
-  @Deprecated('use colors in eyeStyle and dataModuleStyle instead')
-  final Color foregroundColor;
-
-  /// The gradient for all (dataModule and eye)
-  final Gradient? gradient;
 
   /// The QR code version to use.
   final int version;
@@ -136,7 +129,7 @@ class QrImageView extends StatefulWidget {
   final ImageProvider? embeddedImage;
 
   /// Styling options for the image overlay.
-  final QrEmbeddedImageStyle embeddedImageStyle;
+  final QrEmbeddedImageStyle? embeddedImageStyle;
 
   /// If set to true and there is an error loading the embedded image, the
   /// [errorStateBuilder] callback will be called (if it is defined). If false,
@@ -154,6 +147,10 @@ class QrImageView extends StatefulWidget {
 
   /// Styling option for QR data module.
   final QrDataModuleStyle dataModuleStyle;
+
+  /// The foreground color of the final QR code widget.
+  @Deprecated('use colors in eyeStyle and dataModuleStyle instead')
+  final Color? foregroundColor;
 
   @override
   State<QrImageView> createState() => _QrImageViewState();
@@ -227,7 +224,6 @@ class _QrImageViewState extends State<QrImageView> {
       embeddedImage: image,
       eyeStyle: widget.eyeStyle,
       dataModuleStyle: widget.dataModuleStyle,
-      gradient: widget.gradient
     );
     return _QrContentView(
       edgeLength: edgeLength,
